@@ -58,3 +58,15 @@ Then checkout your server logs, analaytics and more in the [NuxtHub Admin](https
 
 You can also deploy using [Cloudflare Pages CI](https://hub.nuxt.com/docs/getting-started/deploy#cloudflare-pages-ci).
 
+- [ ] Send to many people,
+- [ ] Make the button disabled
+- [ ] Say on the landing that the file will be deleted after 4 days
+- [ ] Remove input focus
+- [ ] Make it more beautiful
+- [ ] Redo the features
+- [ ] Add the good header buttons
+- [ ] Add text to say that contributors are welcome
+- [ ] Make a better landing, with animation when it's sending, form reset etc..
+- [ ] Make template mails
+- [ ] Switch view when the file is sending
+- [ ] Multipart complete upload don't work

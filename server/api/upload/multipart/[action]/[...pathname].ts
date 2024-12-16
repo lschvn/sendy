@@ -27,7 +27,8 @@ export default defineEventHandler(async (event) => {
     }
 
     return result
-  } catch (error) {
+  }
+  catch (error) {
     console.error('Error during multipart upload:', error)
     throw createError({ statusCode: 500, message: 'Internal Server Error' })
   }

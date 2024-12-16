@@ -1,6 +1,8 @@
 export default defineEventHandler(async (event) => {
   const { path, title, to, message } = await readBody(event)
 
+  console.log('Completing upload:', { path, title, to, message })
+
   const object = await hubBlob().head(path)
 
   const databaseResult = await saveToDatabase({
