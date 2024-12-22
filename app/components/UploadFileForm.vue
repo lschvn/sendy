@@ -1,19 +1,34 @@
 <template>
-  <form @submit.prevent="uploadFile" class="space-y-6">
+  <form class="space-y-6" @submit.prevent="uploadFile">
     <div class="space-y-4">
       <div>
         <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
-        <input type="text" id="title" v-model="form.title" class="mt-1 block w-full rounded-lg border-gray-300 bg-white/50 backdrop-blur-sm shadow-sm focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 focus:ring-opacity-50 transition-colors" />
+        <input
+          id="title"
+          v-model="form.title"
+          type="text"
+          class="mt-1 block w-full rounded-lg border-gray-300 bg-white/50 backdrop-blur-sm shadow-sm focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 focus:ring-opacity-50 transition-colors"
+        >
       </div>
 
       <div>
         <label for="to" class="block text-sm font-medium text-gray-700">To</label>
-        <input type="text" id="to" v-model="form.to" class="mt-1 block w-full rounded-lg border-gray-300 bg-white/50 backdrop-blur-sm shadow-sm focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 focus:ring-opacity-50 transition-colors" />
+        <input
+          id="to"
+          v-model="form.to"
+          type="text"
+          class="mt-1 block w-full rounded-lg border-gray-300 bg-white/50 backdrop-blur-sm shadow-sm focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 focus:ring-opacity-50 transition-colors"
+        >
       </div>
 
       <div>
         <label for="message" class="block text-sm font-medium text-gray-700">Message</label>
-        <textarea id="message" v-model="form.message" rows="3" class="mt-1 block w-full rounded-lg border-gray-300 bg-white/50 backdrop-blur-sm shadow-sm focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 focus:ring-opacity-50 transition-colors"></textarea>
+        <textarea
+          id="message"
+          v-model="form.message"
+          rows="3"
+          class="mt-1 block w-full rounded-lg border-gray-300 bg-white/50 backdrop-blur-sm shadow-sm focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 focus:ring-opacity-50 transition-colors"
+        />
       </div>
     </div>
 
@@ -25,9 +40,17 @@
           <div class="flex text-sm text-gray-600">
             <label for="file-upload" class="relative cursor-pointer rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-1 focus-within:ring-indigo-400 focus-within:ring-opacity-50">
               <span>Upload a file</span>
-              <input id="file-upload" name="file-upload" type="file" class="sr-only" @change="handleFileChange" />
+              <input
+                id="file-upload"
+                name="file-upload"
+                type="file"
+                class="sr-only"
+                @change="handleFileChange"
+              >
             </label>
-            <p class="pl-1">or drag and drop</p>
+            <p class="pl-1">
+              or drag and drop
+            </p>
           </div>
           <p class="text-xs text-gray-500">
             PNG, JPG, GIF up to 500MB
@@ -40,32 +63,28 @@
     </div>
 
     <div>
-      <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200">
+      <button type="submit" :disabled="isUploading" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200">
         Send file
       </button>
     </div>
   </form>
 
   <div class="mt-6">
-    <p :class="{'text-green-600': state.status === 'success', 'text-red-600': state.status === 'error'}" class="text-center font-medium">
+    <p :class="{ 'text-green-600': state.status === 'success', 'text-red-600': state.status === 'error' }" class="text-center font-medium">
       {{ state.message }}
     </p>
     <div v-if="state.progress > 0" class="mt-4">
-      <!-- Pourcentage au-dessus de la barre -->
       <div class="flex justify-between items-center mb-2">
         <span class="text-sm font-medium text-indigo-600">Progression</span>
         <span class="text-sm font-medium text-indigo-600">{{ state.progress }}%</span>
       </div>
 
-      <!-- Container de la progress bar -->
       <div class="bg-gray-100 rounded-full h-4 overflow-hidden shadow-inner relative">
-        <!-- Barre de progression avec animation -->
         <div
           class="h-full rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-500 relative overflow-hidden transition-all duration-300 ease-out"
           :style="{ width: `${state.progress}%` }"
         >
-          <!-- Effet de brillance -->
-          <div class="absolute inset-0 progress-shine"></div>
+          <div class="absolute inset-0 progress-shine" />
         </div>
       </div>
     </div>
@@ -80,16 +99,18 @@ const state = ref({
 })
 
 const form = ref<{
-  file: File | null,
-  title: string,
-  to: string,
-  message: string,
+  file: File | null
+  title: string
+  to: string
+  message: string
 }>({
   file: null,
   title: '',
   to: '',
   message: '',
 })
+
+const isUploading = ref(false)
 
 async function uploadFile() {
   if (!form.value.file) {
@@ -98,7 +119,9 @@ async function uploadFile() {
     return
   }
 
-  const fileSizeLimit = 500 * 1024 * 1024 // 500 MB
+  isUploading.value = true
+
+  const fileSizeLimit = 100 * 1024 * 1024 // 100 MB
 
   if (form.value.file.size > fileSizeLimit) {
     const upload = useMultipartUpload('/api/upload/multipart')
@@ -109,7 +132,7 @@ async function uploadFile() {
       message: form.value.message,
     }
 
-    const { completed, progress, abort } = upload(form.value.file, { metadata })
+    const { completed, progress, abort } = upload(form.value.file)
 
     watch(progress, (val) => {
       state.value.progress = Math.round(val)
@@ -123,17 +146,22 @@ async function uploadFile() {
       await $fetch('/api/upload/complete', {
         method: 'POST',
         body: {
-          path: result.pathname,
+          path: result?.pathname || '',
           title: form.value.title,
           to: form.value.to,
           message: form.value.message,
         },
       })
-    } catch (error) {
+    }
+    catch (error) {
       state.value.message = 'An error occurred during upload'
       state.value.status = 'error'
     }
-  } else {
+    finally {
+      isUploading.value = false
+    }
+  }
+  else {
     const formData = new FormData()
     Object.entries(form.value).forEach(([key, value]) => {
       if (value !== null) formData.append(key, value)
@@ -148,12 +176,17 @@ async function uploadFile() {
       if (response.ok) {
         state.value.message = 'Upload successful!'
         state.value.status = 'success'
-      } else {
+      }
+      else {
         throw new Error('Upload failed')
       }
-    } catch (error) {
+    }
+    catch (error) {
       state.value.message = 'An error occurred during upload'
       state.value.status = 'error'
+    }
+    finally {
+      isUploading.value = false
     }
   }
 }

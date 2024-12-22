@@ -7,7 +7,6 @@ export default defineTask({
     try {
       console.log('Starting file purge task...')
 
-      // Récupérer toutes les clés avec le préfixe 'files:'
       const keys = await hubKV().getKeys('files:')
       console.log(`Total files found: ${keys.length}`)
 
