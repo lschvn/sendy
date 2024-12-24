@@ -12,7 +12,6 @@ const state = reactive({
   messageInput: '',
 })
 
-// Validation personnalisée
 function validate(formData: any): FormError[] {
   const errors: FormError[] = []
   if (!formData.file) {
@@ -106,100 +105,130 @@ function handleFileChange(event: Event) {
 </script>
 
 <template>
-  <NuxtForm
-    :state="state"
-    :validate="validate"
-    class="space-y-6"
-    @submit="onSubmit"
-  >
-    <NuxtFormField
-      name="title"
-      label="Title"
-      description="File title"
+  <div class="max-w-2xl mx-auto p-6 bg-white rounded-xl shadow-sm">
+    <NuxtForm
+      :state="state"
+      :validate="validate"
+      class="space-y-8"
+      @submit="onSubmit"
     >
-      <NuxtInput
-        v-model="state.title"
-        type="text"
-        placeholder="Enter a title"
-      />
-    </NuxtFormField>
-
-    <NuxtFormField
-      name="to"
-      label="Recipient"
-      description="Who will receive your file?"
-    >
-      <NuxtInput
-        v-model="state.to"
-        type="text"
-        placeholder="Recipient's name or email"
-      />
-    </NuxtFormField>
-
-    <NuxtFormField
-      name="messageInput"
-      label="Message"
-      description="Write a short message"
-    >
-      <NuxtTextarea
-        v-model="state.messageInput"
-        :rows="3"
-        placeholder="Optional message"
-      />
-    </NuxtFormField>
-
-    <NuxtFormField
-      name="file"
-      label="File upload"
-      description="PNG, JPG, GIF up to 500MB"
-    >
-      <NuxtInput
-        type="file"
-        accept="image/*"
-        @change="handleFileChange"
-      />
-      <p
-        v-if="state.file"
-        class="mt-2 text-sm text-gray-600"
+      <NuxtFormField
+        name="title"
+        label="Title"
+        description="File title"
+        class="space-y-2"
       >
-        Selected file: {{ state.file.name }}
-      </p>
-    </NuxtFormField>
+        <NuxtInput
+          v-model="state.title"
+          type="text"
+          placeholder="Enter a title"
+          class="w-full"
+        />
+      </NuxtFormField>
 
-    <NuxtButton
-      :disabled="state.isUploading"
-      color="primary"
-      type="submit"
-    >
-      Send file
-    </NuxtButton>
-  </NuxtForm>
+      <NuxtFormField
+        name="to"
+        label="Recipient"
+        description="Who will receive your file?"
+        class="space-y-2"
+      >
+        <NuxtInput
+          v-model="state.to"
+          type="text"
+          placeholder="Recipient's name or email"
+          class="w-full"
+        />
+      </NuxtFormField>
 
-  <div class="mt-6">
-    <p
-      :class="{
-        'text-green-600': state.status === 'success',
-        'text-red-600': state.status === 'error',
-      }"
-      class="text-center font-medium"
-    >
-      {{ state.message }}
-    </p>
+      <NuxtFormField
+        name="messageInput"
+        label="Message"
+        description="Write a short message"
+        class="space-y-2"
+      >
+        <NuxtTextarea
+          v-model="state.messageInput"
+          :rows="3"
+          placeholder="Optional message"
+          class="w-full"
+        />
+      </NuxtFormField>
 
-    <div
-      v-if="state.progress > 0"
-      class="mt-4"
-    >
-      <div class="flex justify-between items-center mb-2">
-        <span class="text-sm font-medium text-indigo-600">Progress</span>
-        <span class="text-sm font-medium text-indigo-600">{{ state.progress }}%</span>
-      </div>
-      <div class="bg-gray-100 rounded-full h-4 overflow-hidden shadow-inner relative">
-        <div
-          class="h-full rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-500 relative overflow-hidden transition-all duration-300 ease-out"
-          :style="{ width: `${state.progress}%` }"
+      <NuxtFormField
+        name="file"
+        label="File upload"
+        description="PNG, JPG, GIF up to 500MB"
+        class="space-y-2"
+      >
+        <div class="flex items-center justify-center w-full">
+          <label class="flex flex-col w-full h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors duration-300">
+            <div class="flex flex-col items-center justify-center pt-7">
+              <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+              </svg>
+              <p class="pt-1 text-sm tracking-wider text-gray-400">
+                Drop your file here or click to browse
+              </p>
+            </div>
+            <NuxtInput
+              type="file"
+              accept="image/*"
+              class="opacity-0"
+              @change="handleFileChange"
+            />
+          </label>
+        </div>
+        <p
+          v-if="state.file"
+          class="mt-2 text-sm text-gray-600 flex items-center"
         >
-          <div class="absolute inset-0 progress-shine" />
+          <svg class="w-4 h-4 mr-2 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+          {{ state.file.name }}
+        </p>
+      </NuxtFormField>
+
+      <div class="flex justify-end">
+        <NuxtButton
+          :disabled="state.isUploading"
+          :loading="state.isUploading"
+          color="primary"
+          type="submit"
+          class="px-6"
+        >
+          {{ state.isUploading ? 'Sending...' : 'Send file' }}
+        </NuxtButton>
+      </div>
+    </NuxtForm>
+
+    <div class="mt-8">
+      <p
+        v-if="state.message"
+        :class="{
+          'bg-green-50 text-green-700': state.status === 'success',
+          'bg-red-50 text-red-700': state.status === 'error',
+        }"
+        class="p-4 rounded-lg text-center font-medium transition-all duration-300"
+      >
+        {{ state.message }}
+      </p>
+
+      <div
+        v-if="state.progress > 0"
+        class="mt-6"
+      >
+        <div class="flex justify-between items-center mb-2">
+          <span class="text-sm font-medium text-gray-700">Upload progress</span>
+          <span class="text-sm font-medium text-gray-700">{{ state.progress }}%</span>
+        </div>
+        <div class="bg-gray-100 rounded-full h-5 overflow-hidden">
+          <div
+            class="h-full rounded-full bg-gradient-to-r from-primary-500 to-primary-600 transition-all duration-300 relative"
+            :style="{ width: `${state.progress}%` }"
+          >
+            <div class="absolute inset-0 progress-shine" />
+          </div>
         </div>
       </div>
     </div>
@@ -211,7 +240,7 @@ function handleFileChange(event: Event) {
   background: linear-gradient(
     90deg,
     rgba(255,255,255,0) 0%,
-    rgba(255,255,255,0.4) 50%,
+    rgba(255,255,255,0.3) 50%,
     rgba(255,255,255,0) 100%
   );
   animation: shine 1.5s infinite;

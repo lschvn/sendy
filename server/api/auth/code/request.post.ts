@@ -4,9 +4,9 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, message: 'Missing Email' })
   }
 
-  const oldKeys = await hubKV().get(`authCode:${email}`)
+  const oldKeys = await hubKV().get(`auth:${email}`)
   if (oldKeys) {
-    await hubKV().del(`authCode:${email}`)
+    await hubKV().del(`auth:${email}`)
   }
 
   const code = Math.floor(100000 + Math.random() * 900000).toString()
@@ -17,6 +17,6 @@ export default defineEventHandler(async (event) => {
     text: `Your login code is: ${code}`,
   })
 
-  await hubKV().set(`authCode:${email}`, code)
+  await hubKV().set(`auth:${email}`, code)
   return { success: true, status: 200 }
 })
