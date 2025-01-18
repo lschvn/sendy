@@ -1,72 +1,45 @@
-# Hello Edge
+# Sendy – A Simple WeTransfer Clone on the Edge
 
-A minimal [Nuxt](https://nuxt.com) starter deployed on the Edge using [NuxtHub](https://hub.nuxt.com).
+**Sendy** is a minimalist file-sharing application inspired by WeTransfer, built with **Nuxt** and **NuxtHub**. It runs on Cloudflare Workers at the edge, supports large files via multipart upload, and automatically deletes them after 4 days using Nitro tasks.
 
-https://hello.nuxt.dev
+---
 
-<a href="https://hello.nuxt.dev">
-<img src="https://github.com/nuxt-hub/hello-edge/assets/904724/99d1bd54-ef7e-4ac9-83ad-0a290f85edcf" alt="Hello World template for NuxtHub" />
-</a>
+## Installation
 
-## Features
+1. Clone the repository:
 
-- Server-Side rendering on Cloudflare Workers
-- ESLint setup
-- Ready to add a database, blob and KV storage
-- One click deploy on 275+ locations for free
+   ```bash
+   git clone https://github.com/lschvn/sendy.git
+   ```
 
-## Setup
+2. Navigate to the project directory:
 
-Make sure to install the dependencies with [pnpm](https://pnpm.io/installation#using-corepack):
+   ```bash
+   cd sendy
+   ```
 
-```bash
-pnpm install
-```
+3. Install dependencies:
 
-You can update the main text displayed by creating a `.env`:
+   ```bash
+   pnpm install
+   ```
 
-```bash
-NUXT_PUBLIC_HELLO_TEXT="Hello my world!"
-```
+4. Start the development server:
 
-## Development Server
+   ```bash
+   pnpm run dev
+   ```
 
-Start the development server on `http://localhost:3000`:
+The app will now be running locally. By default, you can access it at [http://localhost:3000](http://localhost:3000).
 
-```bash
-pnpm dev
-```
+---
 
-## Production
+## Contributing
 
-Build the application for production:
+Contributions, bug reports, and feature requests are welcome! Feel free to open an [issue](../../issues) or submit a [pull request](../../pulls).
 
-```bash
-pnpm build
-```
+---
 
-## Deploy
+## License
 
-
-Deploy the application on the Edge with [NuxtHub](https://hub.nuxt.com) on your Cloudflare account:
-
-```bash
-npx nuxthub deploy
-```
-
-Then checkout your server logs, analaytics and more in the [NuxtHub Admin](https://admin.hub.nuxt.com).
-
-You can also deploy using [Cloudflare Pages CI](https://hub.nuxt.com/docs/getting-started/deploy#cloudflare-pages-ci).
-
-- [ ] Send to many people,
-- [ ] Make the button disabled
-- [ ] Say on the landing that the file will be deleted after 4 days
-- [ ] Remove input focus
-- [ ] Make it more beautiful
-- [ ] Redo the features
-- [ ] Add the good header buttons
-- [ ] Add text to say that contributors are welcome
-- [ ] Make a better landing, with animation when it's sending, form reset etc..
-- [ ] Make template mails
-- [ ] Switch view when the file is sending
-- [ ] Multipart complete upload don't work
+This project is licensed under the [MIT License](LICENSE). Feel free to fork, modify, and distribute under these terms.
