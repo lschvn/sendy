@@ -43,4 +43,6 @@ export default defineEventHandler(async (event) => {
     text: html,
   })
   console.log('Email sent')
+
+  return { url: "https://sendy.nuxt.dev/downloads/" + databaseResult.id }
 })
