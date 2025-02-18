@@ -1,26 +1,38 @@
 <template>
   <div class="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">
-    <nav class="bg-white/70 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50">
-      <div class="container mx-auto px-4 py-4">
+    <nav class="bg-white/80 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50 shadow-sm">
+      <div class="container mx-auto px-4 py-3">
         <div class="flex items-center justify-between">
-          <div class="flex items-center gap-1">
+          <div class="flex items-center gap-2 group cursor-pointer">
             <img
-              class="translate-y-[1px]"
+              class="translate-y-[1px] group-hover:scale-105 transition-transform duration-200"
               src="/white-icon.png"
               width="42"
               height="42"
               alt="Sendy Logo"
             >
-            <span class="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+            <span class="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
               Sendy
             </span>
           </div>
-          <div class="flex items-center space-x-4">
-            <a href="#" class="text-gray-600 hover:text-indigo-600 transition-colors">
-              Documentation
+          <div class="flex items-center gap-4">
+            <a 
+              href="https://lschvn.dev/en" 
+              target="_blank"
+              rel="noopener"
+              class="text-gray-600 hover:text-indigo-600 transition-colors flex items-center gap-1 px-3 py-1.5 rounded-lg bg-gray-100/50 hover:bg-gray-100"
+            >
+              <Icon name="heroicons:user-circle" class="w-5 h-5" />
+              <span>Portfolio</span>
             </a>
-            <a href="#" class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
-              Get Started
+            <a 
+              href="https://github.com/lschvn/sendy" 
+              target="_blank"
+              rel="noopener"
+              class="flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-all duration-200 hover:scale-105"
+            >
+              <Icon name="mdi:github" class="w-5 h-5" />
+              <span>GitHub</span>
             </a>
           </div>
         </div>
@@ -79,19 +91,25 @@
 <script setup>
 const features = [
   {
-    icon: 'heroicons:bolt',
-    title: 'Lightning Fast',
-    description: 'Upload and share files at incredible speeds with edge computing.',
+    icon: 'heroicons:users',
+    title: 'Open & Free',
+    description: 'A collaborative open-source project, completely free thanks to Cloudflare and NuxtHub.',
   },
   {
     icon: 'heroicons:shield-check',
     title: 'Secure',
-    description: 'Your files are encrypted and protected with enterprise-grade security.',
+    description: 'Your files are encrypted and protected during transfer and storage.',
   },
   {
-    icon: 'heroicons:globe-alt',
-    title: 'Global CDN',
-    description: 'Files are distributed across our global network for quick access.',
+    icon: 'heroicons:bolt',
+    title: 'Edge-Powered',
+    description: 'Lightning-fast transfers using Cloudflare\'s global edge network.',
   },
 ]
 </script>
+
+<style scoped>
+.router-link-active {
+  @apply text-indigo-600;
+}
+</style>

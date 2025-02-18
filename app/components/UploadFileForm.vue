@@ -7,7 +7,8 @@
           id="title"
           v-model="form.title"
           type="text"
-          class="mt-1 block w-full rounded-lg border-gray-300 bg-white/50 backdrop-blur-sm shadow-sm focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 focus:ring-opacity-50 transition-colors"
+          class="mt-1 block w-full px-4 py-2 rounded-lg bg-white/50 backdrop-blur-sm border-0 ring-1 ring-gray-200 focus:ring-2 focus:ring-indigo-400 shadow-sm transition-all duration-200"
+          placeholder="Enter a title"
         >
       </div>
 
@@ -17,7 +18,8 @@
           id="to"
           v-model="form.to"
           type="text"
-          class="mt-1 block w-full rounded-lg border-gray-300 bg-white/50 backdrop-blur-sm shadow-sm focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 focus:ring-opacity-50 transition-colors"
+          class="mt-1 block w-full px-4 py-2 rounded-lg bg-white/50 backdrop-blur-sm border-0 ring-1 ring-gray-200 focus:ring-2 focus:ring-indigo-400 shadow-sm transition-all duration-200"
+            placeholder="Enter recipient(s) - Separate multiple emails with commas"
         >
       </div>
 
@@ -27,19 +29,24 @@
           id="message"
           v-model="form.message"
           rows="3"
-          class="mt-1 block w-full rounded-lg border-gray-300 bg-white/50 backdrop-blur-sm shadow-sm focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 focus:ring-opacity-50 transition-colors"
+          class="mt-1 block w-full px-4 py-2 rounded-lg bg-white/50 backdrop-blur-sm border-0 ring-1 ring-gray-200 focus:ring-2 focus:ring-indigo-400 shadow-sm transition-all duration-200 resize-none"
+          placeholder="Write your message here..."
         />
       </div>
     </div>
 
     <div>
       <label for="file-upload" class="block text-sm font-medium text-gray-700 mb-2">File</label>
-      <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:border-indigo-400 transition-colors duration-200 bg-white/30 backdrop-blur-sm">
+      <label 
+        class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:border-indigo-400 transition-colors duration-200 bg-white/30 backdrop-blur-sm cursor-pointer"
+        @dragover.prevent
+        @drop.prevent="handleFileDrop"
+      >
         <div class="space-y-1 text-center">
           <Icon name="heroicons:cloud-arrow-up" class="mx-auto h-12 w-12 text-gray-400" />
           <div class="flex text-sm text-gray-600">
-            <label for="file-upload" class="relative cursor-pointer rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-1 focus-within:ring-indigo-400 focus-within:ring-opacity-50">
-              <span>Upload a file</span>
+            <span class="relative font-medium text-indigo-600 hover:text-indigo-500">
+              Upload a file
               <input
                 id="file-upload"
                 name="file-upload"
@@ -47,7 +54,7 @@
                 class="sr-only"
                 @change="handleFileChange"
               >
-            </label>
+            </span>
             <p class="pl-1">
               or drag and drop
             </p>
@@ -56,7 +63,7 @@
             PNG, JPG, GIF up to 500MB
           </p>
         </div>
-      </div>
+      </label>
       <p v-if="form.file" class="mt-2 text-sm text-gray-600">
         Selected file: {{ form.file.name }}
       </p>
@@ -112,6 +119,20 @@ const form = ref<{
 
 const isUploading = ref(false)
 
+function resetForm() {
+  form.value = {
+    file: null,
+    title: '',
+    to: '',
+    message: '',
+  }
+  state.value = {
+    progress: 0,
+    message: '',
+    status: '',
+  }
+}
+
 async function uploadFile() {
   if (!form.value.file) {
     state.value.message = 'Please select a file'
@@ -152,6 +173,7 @@ async function uploadFile() {
           message: form.value.message,
         },
       })
+      resetForm() // Reset après succès
     }
     catch (error) {
       state.value.message = 'An error occurred during upload'
@@ -176,6 +198,7 @@ async function uploadFile() {
       if (response.ok) {
         state.value.message = 'Upload successful!'
         state.value.status = 'success'
+        resetForm() // Reset après succès
       }
       else {
         throw new Error('Upload failed')
@@ -194,6 +217,13 @@ async function uploadFile() {
 function handleFileChange(event: Event) {
   const target = event.target as HTMLInputElement
   form.value.file = target.files ? target.files[0] : null
+}
+
+function handleFileDrop(event: DragEvent) {
+  const droppedFiles = event.dataTransfer?.files
+  if (droppedFiles?.[0]) {
+    form.value.file = droppedFiles[0]
+  }
 }
 </script>
 
@@ -216,5 +246,29 @@ function handleFileChange(event: Event) {
   to {
     transform: translateX(200%) skewX(-20deg);
   }
+}
+
+/* Ajout de styles pour les inputs */
+input::placeholder,
+textarea::placeholder {
+  color: #9CA3AF;
+  opacity: 0.6;
+}
+
+input:hover,
+textarea:hover {
+  @apply ring-gray-300;
+  background-color: rgba(255, 255, 255, 0.6);
+}
+
+input:focus,
+textarea:focus {
+  @apply outline-none;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+/* Add hover effect for the drop zone */
+.cursor-pointer:hover {
+  @apply bg-white/40;
 }
 </style>

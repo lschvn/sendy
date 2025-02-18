@@ -19,5 +19,5 @@ export default defineEventHandler(async (event) => {
     text: html,
   })
 
-  return { success: true }
+  return { success: true, url: 'https://sendy.nuxt.dev/downloads/' + databaseResult.id  }
 })
