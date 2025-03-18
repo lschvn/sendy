@@ -16,8 +16,8 @@
             </span>
           </div>
           <div class="flex items-center gap-4">
-            <a 
-              href="https://lschvn.dev/en" 
+            <a
+              href="https://lschvn.dev/en"
               target="_blank"
               rel="noopener"
               class="text-gray-600 hover:text-indigo-600 transition-colors flex items-center gap-1 px-3 py-1.5 rounded-lg bg-gray-100/50 hover:bg-gray-100"
@@ -25,8 +25,8 @@
               <Icon name="heroicons:user-circle" class="w-5 h-5" />
               <span>Portfolio</span>
             </a>
-            <a 
-              href="https://github.com/lschvn/sendy" 
+            <a
+              href="https://github.com/lschvn/sendy"
               target="_blank"
               rel="noopener"
               class="flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-all duration-200 hover:scale-105"
@@ -45,8 +45,22 @@
           <h2 class="text-5xl font-bold pb-6 mb-6 bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
             Simple file sharing
           </h2>
-          <p class="text-xl text-gray-600 flex items-center justify-center gap-2">
-            Sendy is a WeTransfer clone, operating on the edge. Built with <span class="text-indigo-400">Nuxt</span> & <span class="text-indigo-400">NuxtHub</span>
+          <p class="text-xl text-gray-600 flex flex-wrap items-center justify-center gap-2">
+            Sendy is a WeTransfer clone, operating on the edge. Built with
+            <span class="text-indigo-400 flex items-center gap-1">
+              <Icon name="logos:nuxt-icon" class="w-6 h-6" />
+              Nuxt
+            </span> &
+            <span class="text-indigo-400 flex items-center gap-1">
+              <Icon name="logos:cloudflare-icon" class="w-6 h-6" />
+              NuxtHub
+            </span>
+            <template v-if="stats">
+              <span class="block w-full mt-2 text-sm text-gray-500">
+                <span class="font-medium text-indigo-500">{{ stats.files }}</span> shared files representing
+                <span class="font-medium text-indigo-500">{{ formatSize(stats.size) }}</span> of data
+              </span>
+            </template>
           </p>
         </hgroup>
 
@@ -89,6 +103,18 @@
 </template>
 
 <script setup>
+const { data: stats, pending: statsLoading } = await useFetch('/api/stats')
+
+const formatSize = (bytes) => {
+  if (bytes === 0) return '0 Bytes'
+
+  const k = 1024
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
+  const i = Math.floor(Math.log(bytes) / Math.log(k))
+
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
+}
+
 const features = [
   {
     icon: 'heroicons:users',
